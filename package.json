@@ -1,0 +1,19 @@
+{
+  "name": "proyectonodejs",
+  "version": "1.0.0",
+  "description": "Proyecto final del taller",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "express"
+  ],
+  "author": "José Luis Medina Gómez, Álvaro Daniel Zavala Arreola",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

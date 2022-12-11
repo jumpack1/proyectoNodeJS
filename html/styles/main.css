@@ -1,0 +1,11 @@
+html,
+body {
+  height: 100%;
+  background-color: #1f1f1f;
+}
+.delete {
+  cursor: pointer;
+}
+.container {
+  margin-left: 0;
+}

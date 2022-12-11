@@ -3,13 +3,14 @@ const express = require("express");
 const empleados = express.Router();
 const db = require("../config/database");
 
+//Crear nuevo
 empleados.post("/", async (req, res, next) => {
-  const { nombre, apellidos, telefono, correo, direccion, rol } = req.body;
+  const { nombre, apellidos, telefono, correo, direccion } = req.body;
 
-  if (nombre && apellidos && telefono && correo && direccion && rol) {
+  if (nombre && apellidos && telefono && correo && direccion) {
     let query =
-      "INSERT INTO empleados(nombre, apellidos, telefono, correo, direccion, rol)";
-    query += `VALUES('${nombre}','${apellidos}','${telefono}','${correo}','${direccion}','empleado')`;
+      "INSERT INTO empleados(nombre, apellidos, telefono, correo, direccion)";
+    query += `VALUES('${nombre}','${apellidos}','${telefono}','${correo}','${direccion}')`;
 
     const rows = await db.query(query);
     if (rows.affectedRows == 1) {
@@ -22,6 +23,7 @@ empleados.post("/", async (req, res, next) => {
   return res.status(500).json({ code: 500, message: "Campos incompletos" });
 });
 
+//Eliminar
 empleados.delete("/:id([0-9]{1,3})", async (req, res, next) => {
   const query = `DELETE FROM empleados WHERE id=${req.params.id}`;
 
@@ -35,10 +37,11 @@ empleados.delete("/:id([0-9]{1,3})", async (req, res, next) => {
   return res.status(404).json({ code: 404, message: "Empleado no encontrado" });
 });
 
+//Actualizar
 empleados.put("/:id([0-9]{1,3})", async (req, res, next) => {
-  const { nombre, apellidos, telefono, correo, direccion, rol } = req.body;
+  const { nombre, apellidos, telefono, correo, direccion } = req.body;
 
-  if (nombre && apellidos && telefono && correo && direccion && rol) {
+  if (nombre && apellidos && telefono && correo && direccion) {
     let query = `UPDATE empleados SET nombre='${nombre}' ,apellidos='${apellidos}',`;
     query += `telefono='${telefono}',correo='${correo}' WHERE id=${req.params.id};`;
 
@@ -54,11 +57,13 @@ empleados.put("/:id([0-9]{1,3})", async (req, res, next) => {
   return res.status(500).json({ code: 500, message: "Campos incompletos" });
 });
 
+//Seleccionar todo
 empleados.get("/", async (req, res, next) => {
   const emp = await db.query("SELECT * FROM empleados");
   return res.status(200).json({ code: 200, message: emp });
 });
 
+//Buscar por id
 empleados.get("/:id([0-9]{1,3})", async (req, res, next) => {
   const id = req.params.id;
   var count = await db.query("SELECT MAX(id) as count FROM empleados");
@@ -73,6 +78,7 @@ empleados.get("/:id([0-9]{1,3})", async (req, res, next) => {
   }
 });
 
+//Buscar por nombre
 empleados.get("/:nombre([A-Za-z]+)", async (req, res, next) => {
   const nombre = req.params.nombre;
 

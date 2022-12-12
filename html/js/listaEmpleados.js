@@ -20,7 +20,7 @@ function loadEmpleados() {
   axios
     .get(url + "/empleados", headers)
     .then(function (res) {
-      console.log(res);
+      // console.log(res);
       displayEmpleados(res.data.message);
     })
     .catch(function (err) {
@@ -42,13 +42,18 @@ function displayEmpleados(empleados) {
         `<td>${empleados[i].correo}</td>` +
         `<td>${empleados[i].direccion}</td>` +
         `<td><button onclick=deleteEmpleados(${empleados[i].id}) class="btn btn-danger btn-sm me-3">Eliminar</button>` + // `<td><img src="../img/delete.png" id=${i}> ` +
-        `<button class="btn btn-primary btn-sm">Editar</button></td></tr>`;
+        `<button onclick=editEmpleados(${empleados[i].id}) class="btn btn-primary btn-sm">Editar</button></td></tr>`;
     }
   }
   var deleteButtons = document.querySelectorAll(".delete");
+  var editButtons = document.querySelectorAll(".delete");
 
   deleteButtons.forEach(function (btn) {
     btn.addEventListener("click", deleteEmpleados());
+  });
+
+  editButtons.forEach(function (btn) {
+    btn.addEventListener("click", editEmpleados());
   });
 }
 
@@ -59,6 +64,29 @@ function deleteEmpleados(id) {
       .then(function (res) {
         console.log(res);
         location.reload();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+}
+
+function editEmpleados(id) {
+  if (id) {
+    // var nombre = document.getElementById("nombre").value;
+    // var apellidos = document.getElementById("apellidos").value;
+    // var telefono = document.getElementById("telefono").value;
+    // var correo = document.getElementById("correo").value;
+    // var direccion = document.getElementById("direccion").value;
+
+    // console.log(nombre, apellidos, telefono, correo, direccion);
+    axios
+      .get(url + "/empleados/" + id, headers)
+      .then(function (res) {
+        console.log(res);
+        var nombre = res.data.nombre;
+        console.log(nombre);
+        // window.location.href = "editEmp.html";
       })
       .catch(function (err) {
         console.log(err);

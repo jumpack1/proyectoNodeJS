@@ -4,12 +4,12 @@ const empleados = express.Router();
 const db = require("../config/database");
 
 //Crear nuevo
-empleados.post("/", async (req, res, next) => {
+empleados.post("/add", async (req, res, next) => {
   const { nombre, apellidos, telefono, correo, direccion } = req.body;
 
   if (nombre && apellidos && telefono && correo && direccion) {
     let query =
-      "INSERT INTO empleados(nombre, apellidos, telefono, correo, direccion)";
+      "INSERT INTO empleados(nombre, apellidos, telefono, correo, direccion) ";
     query += `VALUES('${nombre}','${apellidos}','${telefono}','${correo}','${direccion}')`;
 
     const rows = await db.query(query);

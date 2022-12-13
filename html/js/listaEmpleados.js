@@ -46,7 +46,7 @@ function displayEmpleados(empleados) {
     }
   }
   var deleteButtons = document.querySelectorAll(".delete");
-  var editButtons = document.querySelectorAll(".delete");
+  var editButtons = document.querySelectorAll(".get");
 
   deleteButtons.forEach(function (btn) {
     btn.addEventListener("click", deleteEmpleados());
@@ -70,7 +70,6 @@ function deleteEmpleados(id) {
       });
   }
 }
-
 function editEmpleados(id) {
   if (id) {
     // var nombre = document.getElementById("nombre").value;
@@ -84,9 +83,20 @@ function editEmpleados(id) {
       .get(url + "/empleados/" + id, headers)
       .then(function (res) {
         console.log(res);
-        var nombre = res.data.nombre;
-        console.log(nombre);
-        // window.location.href = "editEmp.html";
+        localStorage.setItem("id", res.data.message[0].id);
+        localStorage.setItem("nombre", res.data.message[0].nombre);
+        localStorage.setItem("apellidos", res.data.message[0].apellidos);
+        localStorage.setItem("telefono", res.data.message[0].telefono);
+        localStorage.setItem("correo", res.data.message[0].correo);
+        localStorage.setItem("direccion", res.data.message[0].direccion);
+
+        window.location.href = "editEmp.html";
+        //console.log(nombre, apellidos, telefono, correo, direccion);
+
+        // var apellidos = document.getElementById("apellidos").value;
+        // var telefono = document.getElementById("telefono").value;
+        // var correo = document.getElementById("correo").value;
+        // var direccion = document.getElementById("direccion").value;
       })
       .catch(function (err) {
         console.log(err);

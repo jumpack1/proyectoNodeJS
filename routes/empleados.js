@@ -82,11 +82,18 @@ empleados.get("/:id([0-9]{1,3})", async (req, res, next) => {
 empleados.get("/:nombre([A-Za-z]+)", async (req, res, next) => {
   const nombre = req.params.nombre;
 
-  const emp = await db.query("SELECT * FROM empleados WHERE nombre= ?", nombre);
-  if (emp.length > 0) {
-    return res.status(200).json({ code: 200, message: emp });
+  if (nombre) {
+    const emp = await db.query(
+      "SELECT * FROM empleados WHERE nombre= ?",
+      nombre
+    );
+    if (emp.length > 0) {
+      return res.status(200).json({ code: 200, message: emp });
+    }
+    return res
+      .status(404)
+      .send({ code: 404, message: "Empleado no encontrado" });
   }
-  return res.status(404).send({ code: 404, message: "Empleado no encontrado" });
 });
 
 module.exports = empleados;

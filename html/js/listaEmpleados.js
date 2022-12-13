@@ -35,7 +35,7 @@ function displayEmpleados(empleados) {
     count = count + 1;
     if (count > i) {
       tabla.innerHTML +=
-        `<tr> <td>${empleados[i].id}</td>` +
+        `<tr class = "show"> <td>${empleados[i].id}</td>` +
         `<td>${empleados[i].nombre}</td>` +
         `<td>${empleados[i].apellidos}</td>` +
         `<td>${empleados[i].telefono}</td>` +
@@ -70,15 +70,9 @@ function deleteEmpleados(id) {
       });
   }
 }
+
 function editEmpleados(id) {
   if (id) {
-    // var nombre = document.getElementById("nombre").value;
-    // var apellidos = document.getElementById("apellidos").value;
-    // var telefono = document.getElementById("telefono").value;
-    // var correo = document.getElementById("correo").value;
-    // var direccion = document.getElementById("direccion").value;
-
-    // console.log(nombre, apellidos, telefono, correo, direccion);
     axios
       .get(url + "/empleados/" + id, headers)
       .then(function (res) {
@@ -91,15 +85,61 @@ function editEmpleados(id) {
         localStorage.setItem("direccion", res.data.message[0].direccion);
 
         window.location.href = "editEmp.html";
-        //console.log(nombre, apellidos, telefono, correo, direccion);
-
-        // var apellidos = document.getElementById("apellidos").value;
-        // var telefono = document.getElementById("telefono").value;
-        // var correo = document.getElementById("correo").value;
-        // var direccion = document.getElementById("direccion").value;
       })
       .catch(function (err) {
         console.log(err);
       });
+  }
+}
+
+function displaySearchEmpleados(empleados) {
+  var count = 0;
+  var tabla = document.getElementById("tabla");
+  for (var i = 0; i < empleados.length; i++) {
+    count = count + 1;
+    if (count > i) {
+      tabla.innerHTML +=
+        `<tr> <td>${empleados[i].id}</td>` +
+        `<td>${empleados[i].nombre}</td>` +
+        `<td>${empleados[i].apellidos}</td>` +
+        `<td>${empleados[i].telefono}</td>` +
+        `<td>${empleados[i].correo}</td>` +
+        `<td>${empleados[i].direccion}</td>` +
+        `<td><button onclick=deleteEmpleados(${empleados[i].id}) class="btn btn-danger btn-sm me-3">Eliminar</button>` + // `<td><img src="../img/delete.png" id=${i}> ` +
+        `<button onclick=editEmpleados(${empleados[i].id}) class="btn btn-primary btn-sm">Editar</button></td></tr>`;
+    }
+  }
+  var deleteButtons = document.querySelectorAll(".delete");
+  var editButtons = document.querySelectorAll(".get");
+
+  deleteButtons.forEach(function (btn) {
+    btn.addEventListener("click", deleteEmpleados());
+  });
+
+  editButtons.forEach(function (btn) {
+    btn.addEventListener("click", editEmpleados());
+  });
+}
+
+function searchEmpleados(value) {
+  if (value) {
+    axios
+      .get(url + "/empleados/" + value, headers)
+      .then(function (res) {
+        var hide = document.querySelectorAll(".show");
+        console.log(hide);
+        hide.forEach(function (tr) {
+          tr.style.display = "none";
+        });
+        displaySearchEmpleados(res.data.message);
+        var returnBtn = document.getElementById("returnBtn");
+        returnBtn.style.display = "inline";
+      })
+      .catch(function (err) {
+        alert("No se encontró el usuario");
+        console.log(err);
+      });
+  } else if (!value) {
+    alert("Favor de escribir algo");
   }
 }
